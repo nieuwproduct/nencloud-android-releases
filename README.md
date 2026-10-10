@@ -3,8 +3,8 @@
 This repository publishes the NenCloud Android app only. It does not contain source code.
 
 - Download page: https://nieuwproduct.github.io/nencloud-android-releases/
-- Latest APK: https://github.com/nieuwproduct/nencloud-android-releases/releases/download/android-v1.3.0/nencloud-android.apk
-- Version: 1.3.0 (versionCode 10300)
+- Latest APK: https://github.com/nieuwproduct/nencloud-android-releases/releases/download/android-v1.3.1/nencloud-android.apk
+- Version: 1.3.1 (versionCode 10301)
 
 The download page is `index.html`. The app reads `version.json` when it checks for updates.
 Pushing an `android-v*` tag runs `.github/workflows/release.yml`, which attaches the APK to the GitHub Release.
