@@ -1,0 +1,36 @@
+# Copied to nieuwproduct/nencloud-android-releases by the private repo's publish script.
+# A deploy key cannot create Releases. This workflow runs in the public repo and uses
+# that repo's GITHUB_TOKEN, which can. The tagged commit contains nencloud-android.apk
+# so this job can upload it; main does not keep that file.
+name: GitHub Release
+
+on:
+  push:
+    tags:
+      - "android-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish the APK as a release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -f nencloud-android.apk
+          tag="${GITHUB_REF_NAME}"
+          version="${tag#android-v}"
+          python3 -c 'import json; print(json.load(open("version.json")).get("notes") or "")' > release-notes.txt
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" nencloud-android.apk --clobber
+          else
+            gh release create "$tag" nencloud-android.apk \
+              --title "NenCloud Android ${version}" \
+              --notes-file release-notes.txt
+          fi
